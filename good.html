@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>How are you?</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+            background-color: #F8B195; /* Pinkish peach background */
+            position: relative; /* For positioning flowers */
+            overflow: hidden; /* Prevent scrollbars */
+        }
+
+        .flower {
+            position: absolute;
+            top: -50px; /* Start above the viewport */
+            animation: fall linear infinite; /* Animation */
+            pointer-events: none; /* Prevent interaction */
+            width: 50px; /* Size of the flower */
+        }
+
+        @keyframes fall {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(100vh); } /* Move to the bottom of the viewport */
+        }
+
+        button {
+            font-size: 18px;
+            padding: 10px 20px;
+            margin: 10px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background-image: url('https://www.transparenttextures.com/patterns/small-flowers.png'); /* Flower background for buttons */
+            background-color: rgba(255, 255, 255, 0.5); /* Semi-transparent white */
+        }
+
+        #response {
+            margin-top: 20px;
+            font-size: 20px;
+        }
+
+        #responseImage {
+            margin-top: 20px;
+            width: 300px; /* Larger image */
+            height: auto;
+            display: none;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        audio {
+            display: none; /* Hide audio controls */
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Hi, how are you?</h1>
+    <button onclick="showResponse('Good')">Good</button>
+    <button onclick="showResponse('Not Good')">Not Good</button>
+
+    <p id="response"></p>
+    <img id="responseImage" src="" alt="Response Image">
+
+    <!-- Audio elements for each option -->
+    <audio id="goodSong" src="https://pagalfree.com/musics/128-Tera%20Yaar%20Hoon%20Main%20-%20Sonu%20Ke%20Titu%20Ki%20Sweety%20128%20Kbps.mp3"></audio>
+    <audio id="notGoodSong" src="https://pagalfree.com/musics/128-Galti%20Se%20Mistake%20-%20Jagga%20Jasoos%20128%20Kbps.mp3"></audio>
+
+    <script>
+        function showResponse(answer) {
+            var responseText = "";
+            var imageUrl = "";
+
+            // Stop any currently playing audio
+            var goodSong = document.getElementById("goodSong");
+            var notGoodSong = document.getElementById("notGoodSong");
+            goodSong.pause();
+            goodSong.currentTime = 20
+            notGoodSong.pause();
+            notGoodSong.currentTime = 18;
+
+            if (answer === "Good") {
+                responseText = "Nice to hear, you're feeling good!";
+                imageUrl = "https://img.freepik.com/premium-photo/cute-teddy-bears-hugging_996086-15648.jpg";
+                goodSong.play(); // Play the "Good" song
+                setTimeout(() => { goodSong.pause(); }, 60000); // Play the song for 60 seconds
+            } else {
+                responseText = "Get well soon!";
+                imageUrl = "https://img.freepik.com/free-vector/get-well-soon-quote-teddy-bear_23-2148498415.jpg";
+                notGoodSong.play(); // Play the "Not Good" song
+                setTimeout(() => { notGoodSong.pause(); }, 60000); // Play the song for 60 seconds
+            }
+
+            document.getElementById("response").innerHTML = responseText;
+            var img = document.getElementById("responseImage");
+            img.src = imageUrl;
+            img.style.display = "block"; /* Show the image */
+
+            // Create flower rain after the button is pressed
+            createFlowerRain();
+        }
+
+        // Generate flower rain
+        function createFlowerRain() {
+            const flowerPositions = [
+                { left: '0%', animationDuration: '6s' },
+                { left: '50%', animationDuration: '7s' },
+                { left: '100%', animationDuration: '8s' },
+                { left: '25%', animationDuration: '5s' },
+                { left: '75%', animationDuration: '6.5s' },
+                { left: '40%', animationDuration: '7.5s' },
+                { left: '10%', animationDuration: '6s' },
+                { left: '90%', animationDuration: '8.5s' }
+            ];
+
+            flowerPositions.forEach(pos => {
+                const flower = document.createElement("img");
+                flower.src = "https://img.icons8.com/ios-filled/50/FFFFFF/flower.png"; // White flower image
+                flower.classList.add("flower");
+                flower.style.left = pos.left; // Set flower position
+                flower.style.animationDuration = pos.animationDuration; // Set animation duration
+                document.body.appendChild(flower);
+            });
+        }
+    </script>
+
+</body>
+</html>
